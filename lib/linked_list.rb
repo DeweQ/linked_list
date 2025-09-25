@@ -21,10 +21,10 @@ module DataStructure
     end
 
     def prepend(value)
-      return add_first_element(value) if @size.zero?
+      return add_first_element(value) if size.zero?
 
       @size += 1
-      node = Node.new(value, @head)
+      node = Node.new(value, head)
       @head = node
     end
 
@@ -44,21 +44,16 @@ module DataStructure
     def at(index)
       return nil unless index.between?(0, size - 1)
 
-      current = @head
-      (0...index).each do
-        current = current.next_node
-      end
-      current
+      node_at(index).value
     end
 
     def pop
-      return nil if @size.zero?
+      return nil if size.zero?
 
       return remove_last_element if size == 1
 
-      last = @tail
-      new_tail = at(@size - 2)
-      @tail = new_tail
+      last = tail
+      @tail = node_at(size - 2)
       @tail.next_node = nil
       @size -= 1
       last
@@ -86,17 +81,28 @@ module DataStructure
     end
 
     def insert_at(value, index)
-      raise IndexError unless index.between?(0, size - 1)
+      case index
+      when size then append(value)
+      when 0 then prepend(value)
+      when (0...size)
+        current = node_at(index - 1)
+        node = Node.new(value, current.next_node)
+        @size += 1
+        current.next_node = node
+      else raise IndexError
+      end
+    end
 
-      return prepend(value) if index.zero?
+    def remove_at(index)
+      return if size.zero?
 
-      return append(value) if index == size
-
-      current = head
-      (index - 1).times { current = current.next_node }
-      node = Node.new(value, current.next_node)
-      @size += 1
-      current.next_node = node
+      case index
+      when 0 then @head = head.next_node
+                  @size -= 1
+      when size - 1 then pop
+      when (0...size) then remove_at_index(index)
+      else raise IndexError
+      end
     end
 
     private
@@ -109,11 +115,25 @@ module DataStructure
     end
 
     def remove_last_element
-      last = @tail
+      last = tail
       @head = nil
       @tail = nil
       @size = 0
       last
+    end
+
+    def remove_at_index(index)
+      return remove_last_element if size == 1
+
+      current = node_at(index - 1)
+      current.next_node = current.next_node.next_node
+      @size -= 1
+    end
+
+    def node_at(index)
+      node = head
+      index.times { node = node.next_node }
+      node
     end
   end
 end
