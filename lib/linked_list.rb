@@ -32,13 +32,14 @@ module DataStructure
       node = Node.new(value, @head)
       @head = node
     end
-    
+
     def to_s
       result = ""
       node = head
       loop do
-        result << "#{node.nil? ? 'nil' : node.to_s}"
+        result << (node.nil? ? "nil" : node.to_s).to_s
         break if node.nil?
+
         result << " -> "
         node = node.next_node
       end
