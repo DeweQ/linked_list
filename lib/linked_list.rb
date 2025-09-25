@@ -85,6 +85,20 @@ module DataStructure
       end
     end
 
+    def insert_at(value, index)
+      raise IndexError unless index.between?(0, size - 1)
+
+      return prepend(value) if index.zero?
+
+      return append(value) if index == size
+
+      current = head
+      (index - 1).times { current = current.next_node }
+      node = Node.new(value, current.next_node)
+      @size += 1
+      current.next_node = node
+    end
+
     private
 
     def add_first_element(value)
