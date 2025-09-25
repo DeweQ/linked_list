@@ -9,7 +9,7 @@ module DataStructure
     end
 
     def to_s
-      "( #{value} )"
+      "( #{value.nil? ? 'nil' : value} )"
     end
   end
 end
