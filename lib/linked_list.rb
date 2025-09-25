@@ -40,6 +40,15 @@ module DataStructure
       end
       result
     end
+    
+    def at(index)
+      return nil unless index.between?(0, size-1)
+      current = @head
+      for i in (0...index)
+        current = current.next_node
+      end
+      current
+    end
 
     private
 
