@@ -74,6 +74,17 @@ module DataStructure
       false
     end
 
+    def find(value)
+      return nil unless contains?(value)
+
+      current = @head
+      (0...@size).each do |i|
+        return i if current.value == value
+
+        current = current.next_node
+      end
+    end
+
     private
 
     def add_first_element(value)
