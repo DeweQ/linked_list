@@ -12,22 +12,17 @@ module DataStructure
     end
 
     def append(value)
-      node = Node.new(value)
+      return add_first_element(value) if size.zero?
+
       @size += 1
-      if @size == 1
-        @head = node
-        @tail = node
-        return
-      end
+      node = Node.new(value)
       @tail.next_node = node
       @tail = node
     end
 
     def prepend(value)
-      if @size.zero?
-        append(value)
-        return
-      end
+      return add_first_element(value) if @size.zero?
+
       @size += 1
       node = Node.new(value, @head)
       @head = node
@@ -44,6 +39,15 @@ module DataStructure
         node = node.next_node
       end
       result
+    end
+
+    private
+
+    def add_first_element(value)
+      node = Node.new(value)
+      @size += 1
+      @head = node
+      @tail = node
     end
   end
 end
