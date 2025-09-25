@@ -64,6 +64,16 @@ module DataStructure
       last
     end
 
+    def contains?(value)
+      current = @head
+      until current.nil?
+        return true if current.value == value
+
+        current = current.next_node
+      end
+      false
+    end
+
     private
 
     def add_first_element(value)
