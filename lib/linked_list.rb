@@ -40,14 +40,28 @@ module DataStructure
       end
       result
     end
-    
+
     def at(index)
-      return nil unless index.between?(0, size-1)
+      return nil unless index.between?(0, size - 1)
+
       current = @head
-      for i in (0...index)
+      (0...index).each do
         current = current.next_node
       end
       current
+    end
+
+    def pop
+      return nil if @size.zero?
+
+      return remove_last_element if size == 1
+
+      last = @tail
+      new_tail = at(@size - 2)
+      @tail = new_tail
+      @tail.next_node = nil
+      @size -= 1
+      last
     end
 
     private
@@ -57,6 +71,14 @@ module DataStructure
       @size += 1
       @head = node
       @tail = node
+    end
+
+    def remove_last_element
+      last = @tail
+      @head = nil
+      @tail = nil
+      @size = 0
+      last
     end
   end
 end
